@@ -2,7 +2,7 @@
 import { SocketClient } from '../common/socketUtility';
 import { CONFIG } from '../common/socketConfig';
 
-const WEBSOCKET_HOST = "ws://localhost:3000/api/ws";
+const WEBSOCKET_HOST = "ws://figure-it-out.onrender.com/api/ws";
 export const socket = new SocketClient(null, CONFIG);
 function connect(){
     socket.ws = new WebSocket(WEBSOCKET_HOST);
