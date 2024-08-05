@@ -29,17 +29,31 @@ function Figure({ figureParams }) {
         patternCanvas.height = 10 * dpr;
         patternContext.fillStyle = color;
         patternContext.strokeStyle = color;
-        patternContext.lineWidth = 4;
+        patternContext.lineWidth = 2;
         patternContext.scale(dpr, dpr);
 
         switch (fill) {
             case 'solid':
                 patternContext.fillRect(0, 0, 10, 10);
                 break;
-            case 'striped':
+            case 'horizontal-striped':
                 patternContext.beginPath();
                 patternContext.moveTo(0, 5);
                 patternContext.lineTo(10, 5);
+                patternContext.stroke();
+                break;
+            case 'vertical-striped':
+                patternContext.beginPath();
+                patternContext.moveTo(5, 0);
+                patternContext.lineTo(5, 10);
+                patternContext.stroke();
+                break;
+            case 'cross-hatch':
+                patternContext.beginPath();
+                patternContext.moveTo(0, 0);
+                patternContext.lineTo(10, 10);
+                patternContext.moveTo(10, 0);
+                patternContext.lineTo(0, 10);
                 patternContext.stroke();
                 break;
             case 'dotted':
