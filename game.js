@@ -28,13 +28,13 @@ app.get('*', (req, res) => {
 });
 
 const server = http.createServer(app);
-const front_port = 3000;
+const port = process.env.PORT || 3000;
 
 const wss = new WebSocketServer({ server, path: '/api/ws' });
 const socketServer = new SocketServer(wss, CONFIG);
 
-server.listen(front_port, () => {
-  console.log(`Server (HTTP & WebSocket) running on port ${front_port}`);
+server.listen(port, () => {
+  console.log(`Server (HTTP & WebSocket) running on port ${port}`);
 });
 
 const properties = [
