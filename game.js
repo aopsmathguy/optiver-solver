@@ -40,20 +40,20 @@ server.listen(port, () => {
 const properties = [
   {
     property: 'color',
-    values: ['red', 'green', 'blue', 'orange']
+    values: ['red', 'green', 'blue']
   },
   {
     property: 'shape',
     values: ['circle', 'square', 'triangle', 'star']
   },
   {
+    property: 'dot',
+    values: ['left', 'up', 'right', 'down']
+  },
+  {
     property: 'fill',
     values: ['solid', 'horizontal-striped', 'vertical-striped', 'cross-hatch', 'dotted']
   },
-  {
-    property: 'dot',
-    values: ['left', 'up', 'right', 'down']
-  }
 ];
 
 socketServer.on("connection", (socket) => {
