@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { selectProperties } from "../../store/slices/figure-it-out";
 import PropertyIcon from "../propertyIcon";
 
-import { StyledButton, StyledGuessMakerContainer,PreviewGuessButtonContainer } from "./style";
+import { StyledButton, StyledGuessMakerContainer,PreviewGuessButtonContainer, StyledButtonRow } from "./style";
 import Figure from "../figure";
 
 import { emitGuess } from "../../ws";
@@ -31,13 +31,13 @@ function GuessCreator() {
     return (<StyledGuessMakerContainer>
         <div>
             {properties.map(({ property, values }, i) => (
-                <div key={i}>
+                <StyledButtonRow key={i}>
                     {values.map((value, j) => (
                         <StyledButton key={j} onClick={() => setCurrentGuessValue(i, j)} className={currentGuess[i] == j ? 'selected' : 'unselected'}>
                             <PropertyIcon property={property} value={value} />
                         </StyledButton>
                     ))}
-                </div>
+                </StyledButtonRow>
             ))}
         </div>
         <PreviewGuessButtonContainer>

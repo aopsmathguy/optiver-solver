@@ -16,10 +16,14 @@ export const StyledButton = styled.button`
         background: rgba(0, 0, 0, 0.5);
     }
 `;
+export const StyledButtonRow = styled.div`
+    white-space: nowrap;
+    text-align: left;
+`;
 export const StyledGuessMakerContainer = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center; // Added this line to center the content horizontally
+  justify-content: left; // Added this line to center the content horizontally
   flex-direction: row;
 `;
 export const PreviewGuessButtonContainer = styled.div`

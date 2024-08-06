@@ -29,7 +29,7 @@ function App() {
     });
   });
   return (
-    <div className="App">
+    <div className="App" style={{margin : "10px"}}>
       <GuessCreator />
       <GuessList />
     </div>
