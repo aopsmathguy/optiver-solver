@@ -2,7 +2,8 @@
 import { SocketClient } from '../common/socketUtility';
 import { CONFIG } from '../common/socketConfig';
 
-const WEBSOCKET_HOST = "wss://figure-it-out.onrender.com/api/ws";
+// const WEBSOCKET_HOST = "wss://figure-it-out.onrender.com/api/ws";
+const WEBSOCKET_HOST = "ws://localhost:3000/api/ws";
 export const socket = new SocketClient(null, CONFIG);
 function connect(){
     socket.ws = new WebSocket(WEBSOCKET_HOST);
@@ -38,6 +39,12 @@ export const onGuessResult = (callback) => {
     socket.on("guessResult", callback);
     return () => {
         socket.removeListener("guessResult", callback);
+    }
+}
+export const onNextGuess = (callback) => {
+    socket.on("nextGuess", callback);
+    return () => {
+        socket.removeListener("nextGuess", callback);
     }
 }
 export const emitGuess = (guess) => {

@@ -11,6 +11,9 @@ export const figureItOutSlice = createSlice({
     setProperties: (state, action) => {
       state.properties = action.payload;
     },
+    setGuesses: (state, action) => {
+      state.guesses = action.payload;
+    },
     logGuess: (state, action) => {
       const guessScore = action.payload;
       const { guess, similarity } = guessScore;
@@ -22,7 +25,7 @@ export const figureItOutSlice = createSlice({
   },
 });
 
-export const { setProperties, logGuess } = figureItOutSlice.actions;
+export const { setProperties, setGuesses, logGuess } = figureItOutSlice.actions;
 export const selectProperties = (state) => state.figureItOut.properties;
 export const selectGuesses = (state) => state.figureItOut.guesses;
 export const selectSolution = (state) => state.figureItOut.solution;

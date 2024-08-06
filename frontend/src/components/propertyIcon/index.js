@@ -62,7 +62,6 @@ function PropertyIcon({ property, value }) {//for example, 'color', 'red' or 'pa
                         break;
                 }
                 const pattern = context.createPattern(patternCanvas, 'repeat');
-                console.log(patternCanvas);
                 context.fillStyle = pattern;
                 context.fillRect(0, 0, canvas.width, canvas.height);
                 break;
@@ -71,7 +70,7 @@ function PropertyIcon({ property, value }) {//for example, 'color', 'red' or 'pa
                 context.beginPath();
                 switch(value){
                     case 'circle':
-                        context.arc(0, 0, 40 * dpr, 0, 2 * Math.PI);
+                        context.arc(0, 0, 35 * dpr, 0, 2 * Math.PI);
                         break;
                     case 'square':
                         context.rect(-35 * dpr, -35 * dpr, 70 * dpr, 70 * dpr);
@@ -94,28 +93,27 @@ function PropertyIcon({ property, value }) {//for example, 'color', 'red' or 'pa
                 context.lineWidth = 4 * dpr;
                 context.stroke();
                 break;
-            case 'size':
-                let scaling = dpr;
+            case 'dot':
+                context.fillStyle = 'black';
+                context.translate(50 * dpr, 50 * dpr);
+                context.beginPath();
                 switch(value){
-                    case 'small':
-                        scaling *= 0.5;
+                    case 'left':
+                        context.arc(-45 * dpr, 0, 5 * dpr, 0, 2 * Math.PI);
                         break;
-                    case 'medium':
-                        scaling *= 0.8;
+                    case 'up':
+                        context.arc(0, -45 * dpr, 5 * dpr, 0, 2 * Math.PI);
                         break;
-                    case 'large':
-                        scaling *= 1.1;
+                    case 'right':
+                        context.arc(45 * dpr, 0, 5 * dpr, 0, 2 * Math.PI);
+                        break;
+                    case 'down':
+                        context.arc(0, 45 * dpr, 5 * dpr, 0, 2 * Math.PI);
                         break;
                     default:
                         break;
                 }
-                context.translate(50 * dpr, 50 * dpr);
-                context.beginPath();
-                context.arc(0, 0, 40 * scaling, 0, 2 * Math.PI);
-                context.closePath();
-                context.strokeStyle = 'black';
-                context.lineWidth = 4 * dpr;
-                context.stroke();
+                context.fill();
                 break;
         }
     }, [property, value])

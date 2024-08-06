@@ -19,7 +19,7 @@ function Figure({ figureParams }) {
             const value = figureParams[i];
             figureObj[key] = value;
         }
-        const { color, shape, size, fill } = figureObj;
+        const { color, shape, fill, dot } = figureObj;
 
         const dpr = window.devicePixelRatio || 1;
 
@@ -77,50 +77,47 @@ function Figure({ figureParams }) {
         shapeContext.clearRect(0, 0, shapeCanvas.width, shapeCanvas.height);
         shapeContext.translate(50* dpr, 50* dpr);
 
-        let scaling = dpr;
-        switch(size){
-            case 'small':
-                scaling *= 0.5;
-                break;
-            case 'medium':
-                scaling *= 0.75;
-                break;
-            case 'large':
-                scaling *= 1.1;
-                break;
-            default:
-                break;
-        }
-
+        shapeContext.beginPath();
         switch(shape){
             case 'circle':
-                shapeContext.beginPath();
-                shapeContext.arc(0, 0, 40* scaling, 0, 2 * Math.PI);
+                shapeContext.arc(0, 0, 35* dpr, 0, 2 * Math.PI);
                 break;
             case 'square':
-                shapeContext.beginPath();
-                shapeContext.rect(-35*scaling, -35*scaling, 70*scaling, 70*scaling);
-                shapeContext.closePath();
+                shapeContext.rect(-35*dpr, -35*dpr, 70*dpr, 70*dpr);
                 break;
             case 'triangle':
-                shapeContext.beginPath();
-                shapeContext.moveTo(0, -35*scaling);
-                shapeContext.lineTo(40*scaling, 35*scaling);
-                shapeContext.lineTo(-40*scaling, 35*scaling);
-                shapeContext.closePath();
+                shapeContext.moveTo(0, -35*dpr);
+                shapeContext.lineTo(40*dpr, 35*dpr);
+                shapeContext.lineTo(-40*dpr, 35*dpr);
                 break;
             case 'star':
-                shapeContext.beginPath();
                 for (let i = 0; i < 10; i++){
                     const angle = i * Math.PI / 5;
                     const radius = i % 2 === 0 ? 40 : 20;
-                    shapeContext.lineTo(scaling* radius * Math.sin(angle), -scaling * radius * Math.cos(angle));
+                    shapeContext.lineTo(dpr* radius * Math.sin(angle), -dpr * radius * Math.cos(angle));
                 }
-                shapeContext.closePath();
                 break;
         }
+        shapeContext.closePath();
         shapeContext.fill();
         shapeContext.stroke();
+        shapeContext.fillStyle = color;
+        shapeContext.beginPath();
+        switch(dot){
+            case 'left':
+                shapeContext.arc(-45*dpr, 0, 5*dpr, 0, 2 * Math.PI);
+                break;
+            case 'up':
+                shapeContext.arc(0, -45*dpr, 5*dpr, 0, 2 * Math.PI);
+                break;
+            case 'right':
+                shapeContext.arc(45*dpr, 0, 5*dpr, 0, 2 * Math.PI);
+                break;
+            case 'down':
+                shapeContext.arc(0, 45*dpr, 5*dpr, 0, 2 * Math.PI);
+        }
+        shapeContext.fill();
+        
     }, [figureParams, properties]);
 
     return <StyledOutlinedCanvas ref={canvasRef}/>;

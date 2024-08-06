@@ -17,7 +17,6 @@ function GuessList(){
             {reversedGuesses.map(({guessScore, i}) => {
                 const { guess, similarity } = guessScore;
                 const simStr = `${'\u2705'.repeat(similarity)}${'\u274C'.repeat(properties.length - similarity)}`;
-                console.log(guess);
                 return <div key={i}>
                     <Figure figureParams={guess.map((v, i) => properties[i].values[v])} />
                     <div>{simStr}</div>

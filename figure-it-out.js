@@ -3,6 +3,7 @@ export const FIOSolver = function(properties){
     this.N = this.properties.length;
     this.Ms = this.properties.map(p => p.values.length);
     this.totalCards = this.Ms.reduce((a, b) => a * b, 1);
+    
     this.generateCards = function(cardIndex = 0){
         if (cardIndex >= this.N){
             return [[]];
@@ -16,14 +17,17 @@ export const FIOSolver = function(properties){
         }
         return cards;
     };
+    
     this.allGuesses = this.generateCards();
-    this.viableCards = [...this.allGuesses];
+    this.viableCards = new Set(this.allGuesses.map(card => JSON.stringify(card)));
+    
     this.evaluateSimilarities = function(guess){
         const out = [];
         for (const o of this.viableCards){
+            const card = JSON.parse(o);
             let count = 0;
             for (let i = 0; i < this.N; i++){
-                if (o[i] === guess[i]){
+                if (card[i] === guess[i]){
                     count++;
                 }
             }
@@ -31,6 +35,7 @@ export const FIOSolver = function(properties){
         }
         return out;
     }
+    
     this.getGuessExpInfo = function(guess){
         const similarities = this.evaluateSimilarities(guess);
         const counts = {};
@@ -42,7 +47,7 @@ export const FIOSolver = function(properties){
         }
         let out = 0;
         for (let i = 0; i <= this.N; i++){
-            const p = counts[i] / this.viableCards.length;
+            const p = counts[i] / this.viableCards.size;
             if (p === 0){
                 continue;
             }
@@ -50,31 +55,46 @@ export const FIOSolver = function(properties){
         }
         return -out;
     }
+    
+    this.isViable = function(guess){
+        return this.viableCards.has(JSON.stringify(guess));
+    }
+    
     this.getGuess = function(){
-        if (this.viableCards.length === 1){
-            return this.viableCards[0];
+        if (this.viableCards.size === 1){
+            return {guess : JSON.parse([...this.viableCards][0]), bits : 0};
         }
         let maxExpInfo = -Infinity;
+        let isViable = false;
         let bestGuess = null;
         for (const guess of this.allGuesses){
             const expInfo = this.getGuessExpInfo(guess);
-            if (expInfo > maxExpInfo){
-                maxExpInfo = expInfo;
-                bestGuess = guess;
+            if (expInfo >= maxExpInfo){
+                if (expInfo > maxExpInfo || !isViable){
+                    maxExpInfo = expInfo;
+                    bestGuess = guess;
+                    isViable = this.isViable(guess);
+                }
             }
         }
-        return bestGuess;
+        return { guess : bestGuess, bits : maxExpInfo};
     }
+    
     this.updateViableCards = function(guess, correctProperties){
-        this.viableCards = this.viableCards.filter(card => {
+        const newViableCards = new Set();
+        for (const card of this.viableCards){
+            const parsedCard = JSON.parse(card);
             let correctCount = 0;
             for (let i = 0; i < this.N; i++){
-                if (card[i] === guess[i]){
+                if (parsedCard[i] === guess[i]){
                     correctCount++;
                 }
             }
-            return correctCount === correctProperties;
-        });
+            if (correctCount === correctProperties){
+                newViableCards.add(card);
+            }
+        }
+        this.viableCards = newViableCards;
     };
 }
 export const FIOGame = function(properties, answerString){

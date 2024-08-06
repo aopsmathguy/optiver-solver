@@ -47,12 +47,12 @@ const properties = [
     values: ['circle', 'square', 'triangle', 'star']
   },
   {
-    property: 'size',
-    values: ['small', 'medium', 'large']
-  },
-  {
     property: 'fill',
     values: ['solid', 'horizontal-striped', 'vertical-striped', 'cross-hatch', 'dotted']
+  },
+  {
+    property: 'dot',
+    values: ['left', 'up', 'right', 'down']
   }
 ];
 
@@ -67,7 +67,6 @@ socketServer.on("connection", (socket) => {
     socket.emit("guessResult", { guess, similarity });
     solver.updateViableCards(guess, similarity);
     const nextGuess = solver.getGuess();
-    console.log("next guess", nextGuess.map((v, i) => properties[i].values[v]));
-
+    socket.emit("nextGuess", nextGuess);
   });
 });

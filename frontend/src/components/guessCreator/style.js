@@ -2,6 +2,9 @@ import styled from 'styled-components';
 export const StyledButton = styled.button`
     padding: 10px;
     border: 0;
+    outline: 4px solid; /* use instead of border */
+    margin-top: 4px;
+    margin-left: 4px;
     mix-blend-mode: multiply;
     &.selected {
         background: rgba(0, 255, 0, 0.5);
@@ -24,4 +27,5 @@ export const PreviewGuessButtonContainer = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  margin-left: 1rem;
 `;

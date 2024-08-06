@@ -5,4 +5,5 @@ export const StyledGuessesContainer = styled.div`
     justify-content: center;
     gap: 1rem;
     overflow-y: auto;
+    margin-top: 1rem;
 `;

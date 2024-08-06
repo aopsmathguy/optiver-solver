@@ -13,11 +13,15 @@ export const CONFIG = new SocketConfig({
                     values :  ['string']
                 }
             ]
-    },
+        },
         "guessResult" : {
             "similarity" : "uint8",
             "guess" : ["uint8"]
         },
+        "nextGuess" : {
+            "guess" : ["uint8"],
+            "bits" : "float32"
+        }
     },
     heartBeatInterval : 10000,
     keepAliveTimeout : 20000
