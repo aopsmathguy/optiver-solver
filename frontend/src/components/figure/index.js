@@ -1,25 +1,20 @@
 import React, { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
-import {
-    selectProperties
-} from "../../store/slices/figure-it-out";
-
 import { StyledOutlinedCanvas } from "./style";
 
-function Figure({ figureParams }) {
-    const properties = useSelector(selectProperties);
+function Figure({ params, figureArguments }) {
     const canvasRef = useRef(null);
 
     useEffect(() => {
-        if (!properties.length) return;
+        if (!params.length) return;
 
         const figureObj = {};
-        for (let i = 0; i < properties.length; i++) {
-            const key = properties[i].property;
-            const value = figureParams[i];
+        for (let i = 0; i < params.length; i++) {
+            const key = params[i].property;
+            const value = figureArguments[i];
             figureObj[key] = value;
         }
-        const { color, shape, fill, dot } = figureObj;
+        const { color, shape, fill, dot, dotColor } = figureObj;
 
         const dpr = window.devicePixelRatio || 1;
 
@@ -28,7 +23,7 @@ function Figure({ figureParams }) {
         patternCanvas.width = 10 * dpr;
         patternCanvas.height = 10 * dpr;
         patternContext.fillStyle = color;
-        patternContext.strokeStyle = color;
+        patternContext.strokeStyle = color || 'black';
         patternContext.lineWidth = 2;
         patternContext.scale(dpr, dpr);
 
@@ -62,6 +57,7 @@ function Figure({ figureParams }) {
                 patternContext.fill();
                 break;
             default:
+                patternContext.fillRect(0, 0, 10, 10);
                 break;
         }
 
@@ -97,11 +93,14 @@ function Figure({ figureParams }) {
                     shapeContext.lineTo(dpr* radius * Math.sin(angle), -dpr * radius * Math.cos(angle));
                 }
                 break;
+            default:
+                shapeContext.rect(-35*dpr, -35*dpr, 70*dpr, 70*dpr);
+                break;
         }
         shapeContext.closePath();
         shapeContext.fill();
         shapeContext.stroke();
-        shapeContext.fillStyle = color;
+        shapeContext.fillStyle = dotColor || 'black';
         shapeContext.beginPath();
         switch(dot){
             case 'left':
@@ -115,10 +114,13 @@ function Figure({ figureParams }) {
                 break;
             case 'down':
                 shapeContext.arc(0, 45*dpr, 5*dpr, 0, 2 * Math.PI);
+                break;
+            default:
+                break;
         }
         shapeContext.fill();
         
-    }, [figureParams, properties]);
+    }, [figureArguments, params]);
 
     return <StyledOutlinedCanvas ref={canvasRef}/>;
 }

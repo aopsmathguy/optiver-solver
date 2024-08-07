@@ -113,3 +113,12 @@ export const FIOGame = function(properties, answerString){
         return count;
     }
 };
+export const calculateSimilarity = function(answer, guess){
+    let count = 0;
+    for (let i = 0; i < answer.length; i++){
+        if (answer[i] === guess[i]){
+            count++;
+        }
+    }
+    return count;
+}

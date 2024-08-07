@@ -1,36 +1,35 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { selectProperties } from "../../store/slices/figure-it-out";
+import { selectGame } from "../../store/slices/figure-it-out";
 import PropertyIcon from "../propertyIcon";
 
 import { StyledButton, StyledGuessMakerContainer,PreviewGuessButtonContainer, StyledButtonRow } from "./style";
 import Figure from "../figure";
 
-import { emitGuess } from "../../ws";
+import { sendGuess } from '../../ws';
 function GuessCreator() {
-    const properties = useSelector(selectProperties);
-    const [currentGuess, setCurrentGuess] = useState([]);
-    const currentGuessString = currentGuess.map((v, i) => properties[i].values[v]);
-    useEffect(() => {
-        if (properties.length > 0) {
-            setCurrentGuess(new Array(properties.length).fill(0));
-        }
-    }, [properties]);
+    const game = useSelector(selectGame);
+    const figureParams = game?.gameProperties?.figureParams;
+    const [currentGuess, setCurrentGuess] = useState(figureParams ? figureParams.map(() => 0) : []);
+    const currentGuessString = currentGuess.map((v, i) => figureParams[i].values[v]);
 
     const setCurrentGuessValue = (i, value) => {
         setCurrentGuess(currentGuess =>
             currentGuess.map((v, j) => (i === j ? value : v))
         );
     };
-    const sendGuess = () => {
-        emitGuess(currentGuess);
+    const makeGuess = () => {
+        sendGuess({
+            guess : currentGuess
+        });
     };
     
 
-    if (!properties.length) return null;
+    if (!game || !game.code) return null;
+    if (!figureParams || !figureParams.length) return null;
     return (<StyledGuessMakerContainer>
         <div>
-            {properties.map(({ property, values }, i) => (
+            {figureParams.map(({ property, values }, i) => (
                 <StyledButtonRow key={i}>
                     {values.map((value, j) => (
                         <StyledButton key={j} onClick={() => setCurrentGuessValue(i, j)} className={currentGuess[i] == j ? 'selected' : 'unselected'}>
@@ -41,8 +40,10 @@ function GuessCreator() {
             ))}
         </div>
         <PreviewGuessButtonContainer>
-            <Figure figureParams={currentGuessString} />
-            <button onClick={sendGuess}>Guess</button>
+            <Figure params={
+                figureParams
+            } figureArguments={currentGuessString}  />
+            <button onClick={makeGuess}>Guess</button>
         </PreviewGuessButtonContainer>
     </StyledGuessMakerContainer>
     );

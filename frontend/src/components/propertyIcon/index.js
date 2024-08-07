@@ -115,6 +115,13 @@ function PropertyIcon({ property, value }) {//for example, 'color', 'red' or 'pa
                 }
                 context.fill();
                 break;
+            case 'dotColor':
+                context.fillStyle = value;
+                context.translate(50 * dpr, 50 * dpr);
+                context.beginPath();
+                context.arc(0, 0, 5 * dpr, 0, 2 * Math.PI);
+                context.fill();
+                break;
         }
     }, [property, value])
     return <StyledOutlinedCanvas ref={canvasRef}/>;
