@@ -1,8 +1,8 @@
 import { SocketClient } from '../common/socketUtility';
 import { CONFIG } from '../common/socketConfig';
 
-// const WEBSOCKET_HOST = process.env.WEBSOCKET_HOST || "wss://figure-it-out.onrender.com/api/ws";
-const WEBSOCKET_HOST = "ws://localhost:3000/api/ws";
+const WEBSOCKET_HOST = process.env.WEBSOCKET_HOST || "wss://figure-it-out.onrender.com/api/ws";
+//const WEBSOCKET_HOST = "ws://localhost:3000/api/ws";
 
 // Instantiate the socket client
 export const socket = new SocketClient(null, CONFIG);
